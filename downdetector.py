@@ -32,7 +32,7 @@ def checkurl(url):
     print(status, words)
     return status, words
 
-checker = "異常"
+checker = "正常"
 
 before_moodle = ""
 before_campusmate = ""
