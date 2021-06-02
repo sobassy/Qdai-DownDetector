@@ -1,6 +1,6 @@
 import urllib.request
 import urllib.error
-from datetime import datetime
+from datetime import datetime, timedelta
 from scraper import GetHomePage, GetCampusmate, GetMoodle
 import tweepy
 import time
@@ -78,7 +78,9 @@ while True:
                 api.update_status(status=tmp)
             before_homepege = txt
 
-        char += datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+        nowdate = datetime.now()
+        nowdate = nowdate + timedelta(hours=9)
+        char += nowdate.strftime("%Y/%m/%d %H:%M:%S")
         char += "\n#九大サーバ情報"
 
         before_checker = checker
