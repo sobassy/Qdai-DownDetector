@@ -33,7 +33,7 @@ def ccl_scraping():
         gakusei_id = tr.xpath('td//text()')[0]
         gakusei_name = tr.xpath('td//text()')[1]
         kadais = tr.xpath('td//text()')[2: 7]
-        print(kadais)
+        print(tr.xpath('td//text()'), kadais)
         if "提出" in kadais:
             index = kadais.index("提出") + 1
             res_str = f"{gakusei_id}/{gakusei_name} さんが 課題{index} を提出しました"
