@@ -33,7 +33,7 @@ def ccl_scraping():
             res_str = f"{gakusei_id}/{gakusei_name} さんが 課題{index} を提出しました"
             with open("backup.db", mode="r", encoding="utf-8") as f:
                 db_list = f.readlines()
-            if res_str in db_list:
+            if res_str not in db_list:
                 # LINE通知を送る
                 db_list.append(res_str)
                 with open("backup.db", mode="w", encoding="utf-8") as f:
