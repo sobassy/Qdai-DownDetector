@@ -34,8 +34,8 @@ def ccl_scraping():
         gakusei_name = tr.xpath('td')[1].text
         kadais_raw = tr.xpath('td')[2:7]
         for i, kadai in enumerate(kadais_raw):
-            print(kadai)
-            if "提出" in kadai:
+            print(kadai.text)
+            if "提出" in kadai.text:
                 index = i + 1
                 res_str = f"{gakusei_id}/{gakusei_name} さんが 課題{index} を提出しました"
                 with open("backup.db", mode="r", encoding="utf-8") as f:
