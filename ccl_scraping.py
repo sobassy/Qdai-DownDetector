@@ -30,37 +30,41 @@ def ccl_scraping():
 
     # parse
     for tr in tr_data:
-        gakusei_id = tr.xpath('td')[0].text
-        gakusei_name = tr.xpath('td')[1].text
-        kadais_raw = tr.xpath('td')[2:7]
-        for i, kadai in enumerate(kadais_raw):
-            print(kadai.text)
-            if "提出" in kadai.text:
-                index = i + 1
-                res_str = f"{gakusei_id}/{gakusei_name} さんが 課題{index} を提出しました"
-                with open("backup.db", mode="r", encoding="utf-8") as f:
-                    db_list = f.readlines()
-                if res_str not in db_list:
-                    # LINE通知を送る
-                    db_list.append(res_str)
-                    with open("backup.db", mode="w", encoding="utf-8") as f:
-                        f.writelines(db_list)
-                    print(res_str)
+        gakusei_id = tr.xpath('td//text()')[0]
+        gakusei_name = tr.xpath('td//text()')[1]
+        kadais = tr.xpath('td')
+        kadais = [x.xpath('span') for x in kadais][2:7]
+        # print(kadais)
+        for i, kadai in enumerate(kadais):
+            if len(kadai) == 1:
+                # print(kadai[0].text)
+                if "提出" in kadai[0].text:
+                    index = i + 1
+                    res_str = f"{gakusei_id}/{gakusei_name} さんが 課題{index} を提出しました"
+                    with open("backup.db", mode="r", encoding="utf-8") as f:
+                        db_list = f.readlines()
+                    if res_str not in db_list:
+                        # LINE通知を送る
+                        db_list.append(res_str)
+                        with open("backup.db", mode="w", encoding="utf-8") as f:
+                            f.writelines(db_list)
+                        print(res_str)
 
-                    res_dict = {
-                        "to": LINE_ID,
-                        "messages":[{"type":"text", "text":res_str}]
-                    }
-                    post_form_data = parse.urlencode(res_dict)
-                    post_headers = {
-                        'Content-Type': 'application/json',
-                        'Authorization': f'Bearer {LINE_TOKEN}'
-                    }
-                    post_req = request.Request('https://api.line.me/v2/bot/message/push', data=post_form_data.encode(), method='POST')
-                    req = request.urlopen(post_req, headers=post_headers)
-                else:
-                    # なにもしない
-                    pass
+                        res_dict = {
+                            "to": LINE_ID,
+                            "messages":[{"type":"text", "text":res_str}]
+                        }
+                        post_headers = {
+                            'Content-Type': 'application/json',
+                            'Authorization': f'Bearer {LINE_TOKEN}'
+                        }
+                        post_req = request.Request('https://api.line.me/v2/bot/message/push',
+                            data=json.dumps(res_dict).encode(), headers=post_headers, method='POST')
+                        req = request.urlopen(post_req)
+                    else:
+                        # なにもしない
+                        pass
+
 
 
 if __name__ == '__main__':
