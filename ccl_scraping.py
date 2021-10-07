@@ -10,6 +10,10 @@ CCL_URL = os.environ["CCL_URL"]
 LINE_TOKEN = os.environ["LINE_TOKEN"]
 LINE_ID = os.environ["LINE_ID"]
 
+if not os.path.exists("./backup.db"):
+    with open("backup.db", mode="w", encoding="utf-8") as f:
+        f.write("")
+
 
 def ccl_scraping():
     # Basic認証用の文字列を作成.
@@ -18,6 +22,7 @@ def ccl_scraping():
     req = request.Request(CCL_URL, headers={"Authorization": "Basic " + basic_user_and_pasword.decode('utf-8')})
     data = request.urlopen(req)
     raw_html = data.read()
+    print(raw_html)
     res_html = html.fromstring(str(raw_html))
     # print(res_html)
     tr_data = res_html.xpath("//table[1]//tr")
