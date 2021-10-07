@@ -2,6 +2,7 @@ import urllib.request
 import urllib.error
 from datetime import datetime, timedelta
 from scraper import GetHomePage, GetCampusmate, GetMoodle
+from ccl_scraping import ccl_scraping
 import tweepy
 import time
 import os
@@ -93,6 +94,9 @@ while True:
             print("tweeted!")
         else:
             print("Stay")
+        
+        # ccl notify
+        ccl_scraping()
 
     except Exception as e:
         print(e)
