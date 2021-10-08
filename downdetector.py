@@ -96,7 +96,7 @@ while True:
             print("Stay")
         
         # ccl notify
-        ccl_scraping()
+#         ccl_scraping()
 
     except Exception as e:
         print(e)
